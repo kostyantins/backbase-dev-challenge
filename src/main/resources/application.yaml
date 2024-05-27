@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    open-in-view: false
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+  flyway:
+    table: flyway_schema_history
+    baseline-on-migrate: true
+    baseline-version: 0
+  datasource:
+    url: ${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: SpringBootJPAHikariCP
+      connection-timeout: 30000
+      max-lifetime: 2000000
+server:
+  port: ${SERVER_PORT}
+

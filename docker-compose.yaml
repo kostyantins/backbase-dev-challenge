@@ -1,0 +1,29 @@
+services:
+  database:
+    image: postgres:15
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=imgroot
+      - POSTGRES_PASSWORD=imgroot
+      - POSTGRES_DB=backbase-challenge
+  backend:
+    image: backbase-dev-challenge
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    env_file: .env
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME}
+      - SERVER_PORT=${SERVER_PORT}
+      - SPRING_FLYWAY_ENABLED=${SPRING_FLYWAY_ENABLED}
+volumes:
+  pgdata:
