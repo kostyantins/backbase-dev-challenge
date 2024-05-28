@@ -1,4 +1,15 @@
 1. [Docker](https://www.docker.com/) needs to be installed.
+2. '.env' file/service configuration needs to be provided in the root project package according to the example - 'evn-example' file, 
+providing the following valid configuration:
+```dotenv
+DB_HOST=jdbc:postgresql://localhost
+DB_NAME=backbase-challenge
+DB_PORT=5432
+DB_PASSWORD=imgroot
+DB_USERNAME=imgroot
+SPRING_FLYWAY_ENABLED=true
+SERVER_PORT=8080
+```
 2. To run both the Database and the Service - open command line, go into the basic `backbase-dev-challenge` project folder and provide the following command:
 ```docker
  docker compose -f ./docker-compose.yaml up -d --build
@@ -20,9 +31,9 @@ mvn spring-boot:run
 Or just use IDE [Jet Brains IntelliJ IDEA](https://www.jetbrains.com/idea/) preferably and run the service through it providing environment variables based on `.env` file as well.
 
 #### NOTE: 
-The DB will automatically populate movie data according to the provided svg file. 
+The DB will be automatically populated by the movie data according to the provided csv file. 
 Remember if the service will be launch again without cleaning DB/docker volume, the data will be set again/duplicated.
-It was done in order no to make additional step calling some endpoint and lack of time to create more suitable solution.
+It was done in order not to make additional step calling some endpoint and lack of time to create more suitable solution.
 
 #### Additionally:
 1. To be able to get each endpoint a user needs to be authenticated (call `auth/authenticated` endpoint that will provide JWT token, user must call all other endpoints with as a header)

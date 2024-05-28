@@ -1,4 +1,4 @@
-package com.backbasedevchallenge.business.ratings.contrillers;
+package com.backbasedevchallenge.business.ratings.controllers;
 
 import com.backbasedevchallenge.business.ratings.dto.RatingRequestDto;
 import com.backbasedevchallenge.business.ratings.dto.RatingResponseDto;
