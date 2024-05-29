@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
 
-    @Query("select r from Rating r order by r.rating desc limit 10")
+    @Query("select r from Rating r left join fetch r.movie m order by r.rating desc limit 10")
     List<Rating> getTopTenRatings();
 }

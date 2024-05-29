@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class RatingService {
 
     private final MovieRepository movieRepository;
-    private final RatingRepository ratingRepository;
 
     @Transactional
     public RatingResponseDto addMovieRatting(RatingRequestDto movieRatingRequest) {
@@ -25,8 +25,13 @@ public class RatingService {
                 .orElseThrow(() -> new IllegalStateException("Movie was not found !!"));
         log.debug("Gating a movie: '{}'", movie);
 
+        final var userEmail = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
         final var rating = Rating.builder()
-                .id(movieRatingRequest.movieId())
+                .movie(movie)
+                .userEmail(userEmail)
                 .rating(movieRatingRequest.rating().getRating())
                 .build();
 
@@ -35,31 +40,8 @@ public class RatingService {
 
         return RatingResponseDto.builder()
                 .movieTitle(movie.getNominee())
-                .ratedBy(movieRatingRequest.rating().getRating())
-                .build();
-    }
-
-    @Transactional
-    public RatingResponseDto updateMovieRatting(RatingRequestDto movieRatingRequest) {
-        final var movie = movieRepository.findById(movieRatingRequest.movieId())
-                .orElseThrow(() -> new IllegalStateException("Movie was not found !!"));
-        log.debug("Gating a movie: '{}'", movie);
-
-        final var existingRating = ratingRepository.findById(movieRatingRequest.movieId())
-                .orElse(null);
-        log.debug("Gating an existing rating: '{}'", movie);
-
-        var existingRatingValue = 0;
-
-        if (ObjectUtils.isNotEmpty(existingRating)) {
-            existingRatingValue = existingRating.getRating();
-            existingRating.setRating(existingRatingValue + movieRatingRequest.rating().getRating());
-            log.debug("Saving the following rating: '{}'", existingRatingValue + movieRatingRequest.rating().getRating());
-        }
-
-        return RatingResponseDto.builder()
-                .movieTitle(movie.getNominee())
-                .ratedBy(movieRatingRequest.rating().getRating())
+                .ratedBy(userEmail)
+                .rating(movieRatingRequest.rating().getRating())
                 .build();
     }
 }

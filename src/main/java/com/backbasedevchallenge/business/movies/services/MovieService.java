@@ -9,6 +9,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -62,6 +63,7 @@ public class MovieService {
 
     }
 
+    @Cacheable(cacheNames = "topTenOrderedByBoxOffice")
     public List<MovieResponseDto> getTopTenOrderedByBoxOffice() {
         var topTenRatings = ratingRepository.getTopTenRatings();
         log.debug("Gating top ten ordered by boxOffice: '{}'", topTenRatings);

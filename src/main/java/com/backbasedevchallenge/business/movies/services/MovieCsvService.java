@@ -20,6 +20,11 @@ public class MovieCsvService {
     private final MovieRepository repository;
 
     public void uploadCsv() throws IOException {
+        if (repository.getNumberOfRows() > 0){
+            log.info("Skipping database population due to data has been already set");
+            return;
+        }
+
         final var file = new File("src/main/resources/files/academy_awards.csv");
         final var absolutePath = file.getAbsolutePath();
         log.info("Preparing to read the following file: '{}'", absolutePath);
@@ -30,8 +35,6 @@ public class MovieCsvService {
                 .build()
                 .parse();
 
-        movies.remove(0);
-
         log.info("Starting saving csv data...");
         repository.saveAll(movies);
         log.info("Finished saving csv data");
@@ -41,5 +44,4 @@ public class MovieCsvService {
     public void triggerCsvUpload() throws IOException {
         uploadCsv();
     }
-
 }

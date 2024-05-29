@@ -19,27 +19,12 @@ public class RatingController {
 
     private final RatingService ratingService;
 
-    @PostMapping
+    @PostMapping("/movie/rating")
     public ResponseEntity<RatingResponseDto> addMovieRatting(@RequestBody RatingRequestDto ratingRequest) {
-        var rating = ratingService.addMovieRatting(ratingRequest);
+        final var rating = ratingService.addMovieRatting(ratingRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(RatingResponseDto.builder()
-                        .movieTitle(rating.movieTitle())
-                        .ratedBy(rating.ratedBy())
-                        .build());
-    }
-
-    @PutMapping
-    public ResponseEntity<RatingResponseDto> updateMovieRatting(@RequestBody RatingRequestDto ratingRequest) {
-        var rating = ratingService.updateMovieRatting(ratingRequest);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(RatingResponseDto.builder()
-                        .movieTitle(rating.movieTitle())
-                        .ratedBy(rating.ratedBy())
-                        .build());
+                .body(rating);
     }
 }
