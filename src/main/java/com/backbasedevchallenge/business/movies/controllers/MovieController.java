@@ -20,9 +20,9 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping("/title")
+    @GetMapping("/oscar/best/pictures")
     public ResponseEntity<MovieOscarWinnerResultResponseDto> isMovieBestPictureOscarWinner(@RequestParam String movieTitle) {
-        var movieOscarWinResult = movieService.isMovieBestPictureOscarWinner(movieTitle);
+        final var movieOscarWinResult = movieService.isMovieBestPictureOscarWinner(movieTitle);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -31,12 +31,12 @@ public class MovieController {
                         .build());
     }
 
-    @GetMapping("/top/rating")
-    public ResponseEntity<List<MovieResponseDto>> isMovieBestPictureOscarWinner() {
-        var movieOscarWinResult = movieService.getTopTenOrderedByBoxOffice();
+    @GetMapping("/top/ten/rating")
+    public ResponseEntity<List<MovieResponseDto>> getTopTenOrderedByBoxOffice() {
+        final var movieOscarWinnerResult = movieService.getTopTenOrderedByBoxOffice();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(movieOscarWinResult);
+                .body(movieOscarWinnerResult);
     }
 }

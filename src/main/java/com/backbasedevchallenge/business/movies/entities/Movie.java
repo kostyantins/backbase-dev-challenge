@@ -8,14 +8,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -46,10 +53,15 @@ public class Movie {
     @CsvBindByPosition(position = 4)
     private String won;
 
-    @OneToOne(
+    @Setter(AccessLevel.PRIVATE)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    @OneToMany(
             mappedBy = "movie",
-            cascade = CascadeType.ALL)
-    private Rating movieRating;
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Rating> movieRatings = new ArrayList<>();
 
     public void addMovieRating(Rating movieRating){
         if (ObjectUtils.isEmpty(movieRating)) {
@@ -57,6 +69,6 @@ public class Movie {
         }
 
         movieRating.setMovie(this);
-        this.movieRating = movieRating;
+        movieRatings.add(movieRating);
     }
 }
