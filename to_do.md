@@ -8,4 +8,4 @@
 8. Add Integration tests based on container approach (ex.: Testcontainers)
 9. Add additional AOP level and move there transit operations (logging, exceptions handling) making service level cleaner
 10. Improve authentication structure using Identity providers (ex.: Keycloak)
-11. ToMany relations queries could be improved using GraphQL
+11. ToMany relations queries could be improved using EntityGraph
